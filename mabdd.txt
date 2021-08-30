@@ -1,0 +1,99 @@
+// CREATION DES TABLES
+
+CREATE DATABASE Evalbdd CHARACTER SET 'utf8';
+
+CREATE TABLE User (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    role VARCHAR(20) NOT NULL,
+    mail VARCHAR(86) NOT NULL UNIQUE,
+    password VARCHAR(60) NOT NULL,
+    pseudo VARCHAR(20) NOT NULL,
+    name VARCHAR(20) NOT NULL,
+    birthday DATE NOT NULL,
+    job VARCHAR(20) NOT NULL
+    
+) ENGINE = InnoDB;
+
+
+CREATE TABLE Cinema(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+    manager INT NOT NULL,
+    FOREIGN KEY (manager) REFERENCES User(id)
+  ) ENGINE = InnoDB;
+  
+
+CREATE TABLE Movie(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+    
+) ENGINE = InnoDB;
+
+    
+
+CREATE TABLE ScreeningRoom(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+    seatNumber INT NOT NULL
+) ENGINE = InnoDB;
+
+CREATE TABLE Seance(
+    id_cine INT NOT NULL,
+    id_movie INT NOT NULL,
+    id_screeningroom INT NOT NULL,
+    id_price FLOAT NULL,
+    PRIMARY KEY(id_cine, id_movie, id_screeningroom),
+    FOREIGN KEY (id_cine) REFERENCES Cinema(id),
+    FOREIGN KEY (id_movie) REFERENCES Movie(id),
+    FOREIGN KEY (id_screeningroom) REFERENCES ScreeningRoom(id)
+    
+
+) ENGINE = InnoDB;
+
+
+Entrer les valeurs fictives:
+
+INSERT INTO User(id, role, mail, password, pseudo, name, birthday, job) VALUES 
+('1','Admin','momodu77@gmail.com','Momo1234!', 'Razmo', 'Khalfallah', '1995-07-25', 'Administrateur'),
+('2','Invited','marjodu77@gmail.com', 'Marjo1234!', 'Marjo77', 'Centeio', '1995-07-25', 'Student'),
+('3','Invited','sosodu77@gmail.com', 'Soso1234!', 'Soso77', 'Frutel', '1995-07-25', 'Schoolboy'),
+('4','Admin','abdeldu77@gmail.com', 'Abdel1234!', 'Abdel77', 'Calmels', '1995-07-25', 'Administrateur');
+
+INSERT INTO Cinema(id, name, manager) VALUES
+('1', 'Gaumont', '4'),
+('2', 'Pathe', '1');
+
+INSERT INTO Movie(id, name) VALUES
+('1', 'Indestrucibles'),
+('2', 'HarryPotter'),
+('3', 'FastAndFurious'),
+('4', 'Conjuring');
+
+INSERT INTO ScreeningRoom(id, name, seatNumber) VALUES
+('1', 'GIGA', '1000'),
+('2', 'MEGA', '750'),
+('3', 'MAX3D', '600');
+
+INSERT INTO Seance(id_cine, id_movie, id_screeningroom, id_price) VALUES
+('1', '2', '1', '7.60'),
+('2', '4', '2', '5.90');
+
+
+
+
+
+AJOUT D'une TABLE Schedule ( horaires)
+
+CREATE TABLE Schedule(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    time DATETIME NOT NULL
+) ENGINE = InnoDB;
+
+INSERT INTO Schedule(id, time) VALUES 
+('1', '2021-08-31 22:00:00'),
+('2', '2021-08-31 14:00:00'),
+('3', '2021-08-31 17:00:00');
+
+ALTER TABLE Seance ADD 
+FOREIGN KEY(id_schedule) REFERENCES Schedule(id);
+
